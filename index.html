@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pour Lou</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fraunces:ital,opsz,wght@0,9..144,400;1,9..144,400&family=Fredoka:wght@500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="petals" aria-hidden="true"></canvas>
+
+<main>
+  <!-- Générique d'ouverture : studio, classification, logos (minuté par main.js) -->
+  <section class="screen is-active cine" id="s-boot">
+    <div class="boot-step"><p class="studio">ENZO PICTURES</p><p class="studio-sub">présente</p></div>
+    <div class="boot-step">
+      <div class="rating"><span class="r-top">TOUS PUBLICS</span><span class="r-big">L</span><span class="r-bot">LOVE</span></div>
+      <p class="rating-txt">Ce film contient des chats, des fleurs<br>et énormément d'amour.</p>
+    </div>
+    <div class="boot-step logos">
+      <div class="logo"><div class="cat-slot logo-cat" data-mood="happy"></div><p>MIAOU STUDIOS</p></div>
+      <div class="logo"><svg viewBox="0 0 24 24"><use href="#flower"/></svg><p>PÉTALE FILMS</p></div>
+    </div>
+    <button class="skip" id="skip">passer</button>
+  </section>
+
+  <!-- Écran titre -->
+  <section class="screen cine" id="s-title">
+    <p class="over">un film d'Enzo</p>
+    <h1 class="film-title script">Lou</h1>
+    <p class="tagline">une histoire de chats, de fleurs et de deux paires d'yeux bleus</p>
+    <button class="press" id="press">appuie pour commencer</button>
+  </section>
+
+  <!-- 0. Enveloppe -->
+  <section class="screen" id="s-intro">
+    <p class="script intro-to">Pour Lou</p>
+    <div class="envelope" id="envelope">
+      <div class="env-back"></div>
+      <div class="env-letter"><p class="hand">J'ai quelques questions pour toi...</p></div>
+      <div class="env-front"></div>
+      <div class="env-flap"></div>
+      <button class="seal" id="seal" aria-label="Ouvrir l'enveloppe"><svg viewBox="0 0 24 24"><use href="#heart"/></svg></button>
+      <div class="cat-slot env-cat" data-mood="neutral"></div>
+    </div>
+    <p class="hint" id="intro-hint">touche le sceau</p>
+    <button class="btn" id="to-quiz" hidden>D'accord</button>
+  </section>
+
+  <!-- 1. Questions -->
+  <section class="screen" id="s-quiz">
+    <div class="card quiz-card">
+      <div class="cat-slot big" id="quiz-cat" data-mood="neutral"></div>
+      <p class="count" id="q-count"></p>
+      <h2 class="question hand" id="q-text"></h2>
+      <p class="q-hint" id="q-hint"></p>
+      <div class="answers">
+        <button class="btn" id="yes">Oui</button>
+        <button class="btn btn-no" id="no">Non</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Mini-jeu -->
+  <section class="screen" id="s-game">
+    <h2 class="script title">Cueille ton bouquet</h2>
+    <p class="rules">Attrape <b class="goal"></b> fleurs avec le chat, évite les nuages de pluie.<br><small>souris, doigt ou flèches</small></p>
+    <div class="arena">
+      <canvas id="game" width="420" height="540"></canvas>
+      <button class="btn arena-start" id="play">Jouer</button>
+    </div>
+    <div class="bouquet-slots" id="slots" aria-live="polite"></div>
+  </section>
+
+  <!-- 3. Victoire + cadeaux -->
+  <section class="screen" id="s-win">
+    <canvas id="burst" aria-hidden="true"></canvas>
+    <div class="cat-slot big jump" data-mood="love"></div>
+    <h2 class="script win-title">Bravo mon cœur</h2>
+    <p class="sub">Tu as gagné trois cadeaux. Ouvre-les.</p>
+    <div class="gifts">
+      <button class="gift" data-gift="g-flowers"><svg viewBox="0 0 64 64"><use href="#gift"/></svg><span>Cadeau 1</span></button>
+      <button class="gift" data-gift="g-music"><svg viewBox="0 0 64 64"><use href="#gift"/></svg><span>Cadeau 2</span></button>
+      <button class="gift" data-gift="g-photos"><svg viewBox="0 0 64 64"><use href="#gift"/></svg><span>Cadeau 3</span></button>
+    </div>
+    <button class="btn" id="to-letter" disabled>Ouvre les 3 cadeaux</button>
+  </section>
+
+  <!-- 3a. Fleurs -->
+  <section class="screen" id="g-flowers">
+    <h2 class="script title">Des fleurs pour toi</h2>
+    <div class="bouquet" id="bouquet"></div>
+    <p class="sub">Celles-là ne faneront jamais.</p>
+    <button class="btn btn-ghost" data-next="s-win">Retour aux cadeaux</button>
+  </section>
+
+  <!-- 3b. Cassette -->
+  <section class="screen" id="g-music">
+    <h2 class="script title">Songs for you</h2>
+    <div class="cassette" id="cassette">
+      <div class="cas-label"><span class="script">Lou</span><small>face A · face B</small></div>
+      <div class="cas-window"><i class="reel"></i><i class="reel"></i></div>
+      <span class="screw s1"></span><span class="screw s2"></span><span class="screw s3"></span><span class="screw s4"></span>
+    </div>
+    <div class="tracks card">
+      <p class="count">Face A · Luther</p>
+      <button class="track" data-dz="2200109167">uet <small>Luther, amne</small></button>
+      <button class="track" data-dz="1765328917">PK TU M'APL ? <small>Luther</small></button>
+      <button class="track" data-dz="4255715141">fongicide <small>Luther</small></button>
+      <p class="count">Face B · whatsaheart</p>
+      <button class="track" data-dz="2687568302">vxmpire (remix) <small>whatsaheart</small></button>
+      <div class="player" id="player" hidden></div>
+    </div>
+    <button class="btn btn-ghost" data-next="s-win">Retour aux cadeaux</button>
+  </section>
+
+  <!-- 3c. Souvenirs -->
+  <section class="screen" id="g-photos">
+    <h2 class="script title">Nos souvenirs</h2>
+    <div class="polaroids">
+      <figure><img src="assets/maison.jpg" alt="Nous deux devant notre maison, dans la neige"><figcaption class="hand">notre maison dans la neige</figcaption></figure>
+      <figure><img src="assets/nuit.jpg" alt="Une nuit d'hiver sur le serveur"><figcaption class="hand">une nuit d'hiver, juste nous</figcaption></figure>
+    </div>
+    <p class="sub">On construit des maisons là-bas. Ici aussi, on construit quelque chose.</p>
+    <button class="btn btn-ghost" data-next="s-win">Retour aux cadeaux</button>
+  </section>
+
+  <!-- 4. Lettre -->
+  <section class="screen" id="s-letter">
+    <article class="letter">
+      <h2 class="script">Pour toi, Lou</h2>
+      <p>Je sais que ça ne va pas trop en ce moment. Je ne peux pas tout réparer d'un coup, mais je peux te rappeler une chose : tu n'es pas seule.</p>
+      <p>Même si c'est des fois assez compliqué pour moi aussi, on prendra tout le temps qu'il faut pour essayer de réparer tout ce qui ne va pas, ou au moins de le faire au maximum.</p>
+      <p>Quand c'est dur, essaie de venir me voir et ne t'isole pas trop.</p>
+      <p class="ps hand">ps : on a promis, plus aucun mensonge entre nous.</p>
+      <p class="script sign">Je t'aime, Enzo</p>
+      <div class="cat-slot letter-cat" data-mood="love"></div>
+    </article>
+    <button class="btn" id="to-credits">Fin</button>
+  </section>
+
+  <!-- Générique de fin -->
+  <section class="screen cine" id="s-credits">
+    <div class="roll" id="roll">
+      <p class="script fin">Fin</p>
+      <p class="role">réalisé par</p><p class="name">Enzo</p>
+      <p class="role">dans le rôle principal</p><p class="name">Lou</p>
+      <p class="role">le chat</p><p class="name">dans son propre rôle</p>
+      <p class="role">les fleurs</p><p class="name">cueillies par moi</p>
+      <p class="role">bande originale</p>
+      <p class="name small">Luther, amne · uet</p><p class="name small">Luther · PK TU M'APL ?</p><p class="name small">Luther · fongicide</p><p class="name small">whatsaheart · vxmpire (remix)</p>
+      <p class="role">tourné</p><p class="name">dans une maison en neige, sur un serveur Minecraft</p>
+      <p class="role">remerciements</p><p class="name">à tes yeux bleus</p>
+      <p class="role">et ce site</p><p class="name">restera ouvert pour toi, reviens quand tu veux</p>
+      <p class="disclaimer">Aucun chat n'a été triste plus de deux secondes pendant le tournage.</p>
+      <p class="script end">Je t'aime.</p>
+    </div>
+    <button class="btn btn-ghost replay" id="replay">Revoir le film</button>
+  </section>
+</main>
+
+<!-- couches cinéma : bandes noires, fondu, carton de chapitre, grain -->
+<div class="bars" aria-hidden="true"></div>
+<div id="blackout" aria-hidden="true"></div>
+<div id="card" aria-hidden="true"><p class="card-num"></p><p class="card-title script"></p></div>
+<div class="grain" aria-hidden="true"></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="heart" viewBox="0 0 24 24"><path fill="currentColor" d="M12 21s-7.5-4.6-10-9.3C.2 8 2 4 6 4c2.3 0 3.8 1.3 6 3.6C14.2 5.3 15.7 4 18 4c4 0 5.8 4 4 7.7C19.5 16.4 12 21 12 21z"/></symbol>
+  <symbol id="gift" viewBox="0 0 64 64">
+    <rect x="8" y="26" width="48" height="32" rx="5" fill="#f7cdd4" stroke="#4a3434" stroke-width="2.5"/>
+    <rect x="4" y="17" width="56" height="12" rx="4" fill="#fbe3e8" stroke="#4a3434" stroke-width="2.5"/>
+    <rect x="28" y="17" width="8" height="41" fill="#e8798f" stroke="#4a3434" stroke-width="2.5"/>
+    <path d="M32 17c-6-12-20-10-14-2 3 3 10 2 14 2zm0 0c6-12 20-10 14-2-3 3-10 2-14 2z" fill="#e8798f" stroke="#4a3434" stroke-width="2.5" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="flower" viewBox="0 0 24 24"><g fill="currentColor"><circle cx="12" cy="6" r="4.4"/><circle cx="17.7" cy="10.2" r="4.4"/><circle cx="15.5" cy="17" r="4.4"/><circle cx="8.5" cy="17" r="4.4"/><circle cx="6.3" cy="10.2" r="4.4"/></g><circle cx="12" cy="12" r="3.4" fill="#ffe08a"/></symbol>
+</svg>
+
+<script src="main.js"></script>
+</body>
+</html>
