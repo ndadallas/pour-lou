@@ -272,3 +272,33 @@ body:has(.screen.cine.is-active) .buddy,body:has(#s-game.is-active) .buddy{opaci
 #s-title .over{margin-bottom:clamp(44px,8vw,80px)}
 #s-title .tagline{margin-top:clamp(40px,6vw,64px)}
 #s-title .press{margin-top:clamp(28px,4vw,44px)}
+
+/* ---------- téléphone ---------- */
+main{height:100dvh}
+button,.cat-slot,.gift,.track{touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.buddy{bottom:calc(14px + env(safe-area-inset-bottom))}
+@media (max-width:640px){
+  .screen{padding-bottom:calc(96px + env(safe-area-inset-bottom))}      /* le contenu ne passe plus sous le petit chat */
+  .screen.cine{padding-bottom:24px}
+  .buddy{right:10px}
+  .buddy .cat-slot{width:62px}
+  .bubble{font-size:17px}
+  .logos{gap:36px}
+  .logo svg{width:56px;height:56px}.logo-cat{width:68px}
+  .studio{letter-spacing:.28em;padding-left:.28em}
+  @keyframes track{from{letter-spacing:.6em;filter:blur(4px)}to{letter-spacing:.28em;filter:none}}
+  .film-title{font-size:44vw}
+  .tagline{padding:0 8px}
+  .quiz-card{margin-top:70px}
+  .answers{gap:16px}
+  .arena{height:min(540px,52svh)}
+  .tracks{padding:16px 16px}
+  .track{font-size:17px}
+  .letter .sign{font-size:34px}
+}
+@media (max-width:640px) and (max-height:720px){
+  .arena{height:46svh}
+  .rules{font-size:16px}
+  .screen{gap:10px}
+}
+@media (max-width:640px){ .bouquet-slots{gap:2px;flex-wrap:nowrap} .bouquet-slots svg{width:20px;height:20px} }
